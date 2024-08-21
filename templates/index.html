@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR Bot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            background-color: #f4f4f4; /* Changed background color for the page */
+        }
+        h1 {
+            background-color: #4CAF50; /* Header background color */
+            color: white;
+            text-align: center;
+            padding: 10px;
+            margin: 0;
+        }
+        .chat-container {
+            flex: 1;
+            padding: 20px;
+            overflow-y: fixed; /* Fixed overflow for scrollable chat */
+            display: flex;
+            flex-direction: column; /* Changed from reverse to normal flow */
+        }
+        .chat-message {
+            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 10px; /* Added border-radius for rounded corners */
+            max-width: 70%;
+            line-height: 1.6; /* Improved readability */
+            font-size: 16px; /* Font size for messages */
+        }
+        .user-message {
+            text-align: right; /* Align user messages to the right */
+            background-color: #DCF8C6; /* Light green background for user messages */
+            align-self: flex-end; /* Align user messages to the end */
+        }
+        .bot-message {
+            text-align: left; /* Align bot messages to the left */
+            background-color: #fff; /* White background for bot messages */
+            border: 1px solid #ccc; /* Added border for bot messages */
+            align-self: flex-start; /* Align bot messages to the start */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Added shadow for a lifted look */
+        }
+        form {
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid #ccc; /* Border on top of the form */
+            background-color: white; /* Form background color */
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-right: 10px; /* Margin to separate text input from submit button */
+        }
+        input[type="submit"] {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50; /* Submit button background color */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049; /* Submit button hover color */
+        }
+    </style>
+</head>
+<body>
+    <h1>HR Bot</h1>
+    <div class="chat-container">
+        <!-- Changed the order of messages to display normally -->
+        {% for q, a in messages %}
+            <div class="chat-message user-message">
+                <strong>You:</strong> {{ q }}
+            </div>
+            <div class="chat-message bot-message">
+                <strong>HR Bot:</strong> {{ a }}
+            </div>
+        {% endfor %}
+    </div>
+    <form method="post">
+        <input type="text" id="question" name="question" placeholder="Enter your question..." autofocus required>
+        <input type="submit" value="Submit">
+    </form>
+    <script>
+        document.getElementById("question").focus();
+        document.getElementById("question").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                this.form.submit();
+            }
+        });
+    </script>
+</body>
+</html>
