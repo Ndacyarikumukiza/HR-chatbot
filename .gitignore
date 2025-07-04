@@ -1,0 +1,14 @@
+# Ignore environment variable files with sensitive keys
+.env
+
+# Python cache files
+__pycache__/
+*.pyc
+
+# IDE/editor files
+.vscode/
+.idea/
+
+# System files
+.DS_Store
+Thumbs.db

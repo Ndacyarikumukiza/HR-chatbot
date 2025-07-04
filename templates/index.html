@@ -1,107 +1,232 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HR Bot</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            background-color: #f4f4f4; /* Changed background color for the page */
-        }
-        h1 {
-            background-color: #4CAF50; /* Header background color */
-            color: white;
-            text-align: center;
-            padding: 10px;
-            margin: 0;
-        }
-        .chat-container {
-            flex: 1;
-            padding: 20px;
-            overflow-y: fixed; /* Fixed overflow for scrollable chat */
-            display: flex;
-            flex-direction: column; /* Changed from reverse to normal flow */
-        }
-        .chat-message {
-            margin-bottom: 10px;
-            padding: 15px;
-            border-radius: 10px; /* Added border-radius for rounded corners */
-            max-width: 70%;
-            line-height: 1.6; /* Improved readability */
-            font-size: 16px; /* Font size for messages */
-        }
-        .user-message {
-            text-align: right; /* Align user messages to the right */
-            background-color: #DCF8C6; /* Light green background for user messages */
-            align-self: flex-end; /* Align user messages to the end */
-        }
-        .bot-message {
-            text-align: left; /* Align bot messages to the left */
-            background-color: #fff; /* White background for bot messages */
-            border: 1px solid #ccc; /* Added border for bot messages */
-            align-self: flex-start; /* Align bot messages to the start */
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Added shadow for a lifted look */
-        }
-        form {
-            padding: 10px;
-            display: flex;
-            justify-content: space-between;
-            border-top: 1px solid #ccc; /* Border on top of the form */
-            background-color: white; /* Form background color */
-        }
-        input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            margin-right: 10px; /* Margin to separate text input from submit button */
-        }
-        input[type="submit"] {
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #4CAF50; /* Submit button background color */
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        input[type="submit"]:hover {
-            background-color: #45a049; /* Submit button hover color */
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chat Bot Assistant - Kepler</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f7f8fa;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background-color: #ffffff;
+      padding: 20px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    header img.logo {
+      max-width: 50px;
+      margin-bottom: 8px;
+    }
+
+    header h3 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 600;
+      color: #111827;
+    }
+
+    .content {
+      display: flex;
+      flex-grow: 1;
+      overflow: hidden;
+    }
+
+    .sidebar {
+      width: 18%;
+      background-color: #ffffff;
+      border-right: 1px solid #e5e7eb;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .sidebar img {
+      width: 70%;
+      margin-bottom: 20px;
+    }
+
+    .sidebar .footer-info {
+      text-align: center;
+      font-size: 14px;
+      color: #4b5563;
+    }
+
+    .main-content {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      background-color: #f9fafb;
+    }
+
+    .chat-container {
+      flex-grow: 1;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .chat-message {
+      max-width: 80%;
+      margin-bottom: 12px;
+      padding: 14px;
+      border-radius: 8px;
+      line-height: 1.6;
+      font-size: 15px;
+      white-space: pre-wrap;
+    }
+
+    .user-message {
+      align-self: flex-end;
+      background-color: #e0f7f1;
+      color: #111827;
+    }
+
+    .bot-message {
+      align-self: flex-start;
+      background-color: #ffffff;
+      border: 1px solid #e5e7eb;
+      color: #111827;
+    }
+
+    .welcome-message {
+      text-align: center;
+      margin: 40px 0;
+      font-size: 16px;
+      color: #6b7280;
+    }
+
+    form {
+      display: flex;
+      align-items: center;
+      padding: 12px 20px;
+      border-top: 1px solid #e5e7eb;
+      background-color: #ffffff;
+    }
+
+    input[type="text"] {
+      flex-grow: 1;
+      padding: 12px 16px;
+      font-size: 15px;
+      border-radius: 20px;
+      border: 1px solid #d1d5db;
+      outline: none;
+      transition: border-color 0.2s ease-in-out;
+    }
+
+    input[type="text"]:focus {
+      border-color: #3b82f6;
+    }
+
+    .text-button {
+      background-color: #3b82f6;
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      margin-left: 12px;
+      border-radius: 20px;
+      font-size: 15px;
+      cursor: pointer;
+      transition: background-color 0.2s ease-in-out;
+    }
+
+    .text-button:hover {
+      background-color: #2563eb;
+    }
+
+    a {
+      text-decoration: none;
+      color: #2563eb;
+    }
+  </style>
 </head>
 <body>
-    <h1>HR Bot</h1>
-    <div class="chat-container">
-        <!-- Changed the order of messages to display normally -->
-        {% for q, a in messages %}
-            <div class="chat-message user-message">
-                <strong>You:</strong> {{ q }}
-            </div>
-            <div class="chat-message bot-message">
-                <strong>HR Bot:</strong> {{ a }}
-            </div>
-        {% endfor %}
+
+  <header>
+    <img src="{{ url_for('static', filename='banner.jpeg') }}" alt="Logo" class="logo" />
+    <h3>Chat Bot Assistant - Kepler College</h3>
+  </header>
+
+  <div class="content">
+    <div class="sidebar">
+      <img src="{{ url_for('static', filename='h_r.jpg') }}" alt="hr" />
+      <div class="footer-info">
+        <img src="{{ url_for('static', filename='kepler_logo.png') }}" alt="Kepler Logo" style="max-width: 40px;">
+        <h4>Kepler Contact</h4>
+        <p><strong>Email:</strong> info@kepler.org</p>
+        <p><strong>Phone:</strong> +250 788 318 264</p>
+        <p><strong>Website:</strong> <a href="https://www.kepler.org" target="_blank">kepler.org</a></p>
+        <p><strong>Address:</strong> KG 11 Ave, Kigali, Rwanda</p>
+      </div>
     </div>
-    <form method="post">
-        <input type="text" id="question" name="question" placeholder="Enter your question..." autofocus required>
-        <input type="submit" value="Submit">
-    </form>
-    <script>
-        document.getElementById("question").focus();
-        document.getElementById("question").addEventListener("keypress", function(event) {
-            if (event.key === "Enter") {
-                event.preventDefault();
-                this.form.submit();
-            }
-        });
-    </script>
+
+    <div class="main-content">
+      <div class="chat-container" id="chat-box">
+        <div class="welcome-message">Welcome! Ask anything and I’ll respond to help you with your learning at Kepler 📚</div>
+        {% for q, a in messages %}
+        <div class="chat-message user-message">
+          <strong>You:</strong> {{ q }}
+        </div>
+        <div class="chat-message bot-message">
+          <strong>SA:</strong> <span class="bot-reply" data-reply="{{ a }}"></span>
+        </div>
+        {% endfor %}
+      </div>
+
+      <form method="post">
+        <input
+          type="text"
+          id="question"
+          name="question"
+          placeholder="Type your question..."
+          autofocus
+          required
+        />
+        <input type="submit" value="Send" class="text-button" />
+      </form>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("question").focus();
+    document.getElementById("question").addEventListener("keypress", function (event) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        this.form.submit();
+      }
+    });
+
+    const chatBox = document.getElementById("chat-box");
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    const botReplies = document.querySelectorAll('.bot-reply');
+    botReplies.forEach((reply, index) => {
+      const text = reply.getAttribute('data-reply');
+      if (index === botReplies.length - 1) {
+        reply.textContent = '';
+        let i = 0;
+        const typing = setInterval(() => {
+          reply.textContent += text.charAt(i);
+          chatBox.scrollTop = chatBox.scrollHeight;
+          i++;
+          if (i >= text.length) clearInterval(typing);
+        }, 10);
+      } else {
+        reply.textContent = text;
+      }
+    });
+  </script>
 </body>
 </html>
